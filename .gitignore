@@ -1,0 +1,16 @@
+# Python 캐시 파일 제외
+__pycache__/
+*.py[cod]
+.pytest_cache/
+
+# 가상환경 제외
+.venv
+venv/
+env/
+
+# 개발 도구 설정 파일 제외
+.vscode/
+.idea/
+
+# 환경 변수 및 비밀 키 파일 제외 (필수)
+.env
