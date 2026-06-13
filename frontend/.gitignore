@@ -22,3 +22,11 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+
+# React(Node.js) 관련 제외
+node_modules/
+dist/
+build/
+.output/
+.vite/

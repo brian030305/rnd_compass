@@ -14,3 +14,10 @@ env/
 
 # 환경 변수 및 비밀 키 파일 제외 (필수)
 .env
+
+# React(Node.js) 관련 제외
+node_modules/
+dist/
+build/
+.output/
+.vite/
