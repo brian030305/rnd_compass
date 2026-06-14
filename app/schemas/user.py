@@ -8,6 +8,7 @@ class UserSignup(BaseModel):
     location: str
     industry: str
     tech_field: Optional[str] = ""
+    job_role: Optional[str] = None
 
 class UserLogin(BaseModel):
     user_id: str

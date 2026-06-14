@@ -39,9 +39,10 @@ def signup(user: UserSignup):
         created_at = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         role = "SUPER_ADMIN" if user.user_id == 'admin' else "COMPANY_MASTER"
         
+        # 🟢 수정됨: 쿼리문에 JOB_ROLE 컬럼 추가
         insert_query = text("""
-            INSERT INTO users_tb (ID, PW, COMPANY, LOCATION, INDUSTRY, TECH, ROLE, CREATED_AT) 
-            VALUES (:id, :pw, :company, :location, :industry, :tech, :role, :created_at)
+            INSERT INTO users_tb (ID, PW, COMPANY, LOCATION, INDUSTRY, TECH, JOB_ROLE, ROLE, CREATED_AT) 
+            VALUES (:id, :pw, :company, :location, :industry, :tech, :job_role, :role, :created_at)
         """)
         
         sql_engine = get_sqlalchemy_engine()
@@ -49,6 +50,7 @@ def signup(user: UserSignup):
             conn.execute(insert_query, {
                 "id": user.user_id, "pw": hashed_pw, "company": user.company_name,
                 "location": user.location, "industry": user.industry, "tech": user.tech_field,
+                "job_role": user.job_role,
                 "role": role, "created_at": created_at
             })
             conn.commit()
@@ -128,14 +130,11 @@ def discord_callback(code: str, state: str):
     discord_id = user_res.json().get("id")
     
     engine = get_sqlalchemy_engine()
+    # ... (생략) ...
     with engine.connect() as conn:
-        # 🟢 수정됨: TO_CHAR 제거
         query = text("UPDATE users_tb SET DISCORD_ID = :discord_id WHERE ID = :user_id")
         conn.execute(query, {"discord_id": discord_id, "user_id": user_id})
         conn.commit()
         
-    return {
-        "status": "success", 
-        "message": "디스코드 연동이 완료되었습니다!", 
-        "discord_id": discord_id
-    }
+    # 🟢 텍스트 대신 프론트엔드의 로그인 페이지로 강제 이동(리다이렉트) 시킵니다.
+    return RedirectResponse(url="http://localhost:5173/login")

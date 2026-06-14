@@ -21,3 +21,6 @@ dist/
 build/
 .output/
 .vite/
+
+# 특정 파일 제외
+bot_wallet
